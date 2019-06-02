@@ -40,11 +40,13 @@ scene.add(skybox)
 // CREATE LIGHTS
 // set up a point light with a color.
 const pointLight = new THREE.PointLight(0xffffff)
+const yellowLight = new THREE.PointLight(0xffff00)
 // move the point light above and forward.
-pointLight.position.set(0, 300, 200)
+pointLight.position.set(-100, 100, 100)
+yellowLight.position.set(2000, 400, 800)
 // add the new light to the scene.
 scene.add(pointLight)
-
+scene.add(yellowLight)
 
 // CREATE CAMERA
 // field of view determines how flat or deep an image is.
@@ -77,7 +79,21 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(width, height)
 // append the renderer canvas to the DOM
 document.body.appendChild(renderer.domElement)
-// finally, render the scene from the camera's perspective.
-// without the camera, we would be blind.
-// without the scene, the camera has nothing to look at.
-renderer.render(scene, camera)
+
+// CREATE CLOCK TO ANIMATE THE SCENE WITH
+const clock = new THREE.Clock;
+
+// declare render function
+render = () => {
+	// finally, render the scene from the camera's perspective.
+	// without the camera, we would be blind.
+	// without the scene, the camera has nothing to look at.
+	renderer.render(scene, camera)
+	// change the cube's rotation.
+	cube.rotation.y -= clock.getDelta();
+	// now, we push the frame forward by one.
+	requestAnimationFrame(render)
+}
+
+// call the render loop - it renders every frame once.
+render()
