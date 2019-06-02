@@ -48,6 +48,7 @@ yellowLight.position.set(2000, 400, 800)
 scene.add(pointLight)
 scene.add(yellowLight)
 
+
 // CREATE CAMERA
 // field of view determines how flat or deep an image is.
 const camFOV = 45
@@ -70,6 +71,10 @@ camera.lookAt(cube.position)
 scene.add(camera)
 
 
+// CREATE CLOCK TO REFERENCE WITH OUR ANIMATIONS
+const clock = new THREE.Clock
+
+
 // CREATE RENDERER CANVAS
 // antialias smooths pixelated edges
 const renderer = new THREE.WebGLRenderer({
@@ -79,21 +84,18 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(width, height)
 // append the renderer canvas to the DOM
 document.body.appendChild(renderer.domElement)
-
-// CREATE CLOCK TO ANIMATE THE SCENE WITH
-const clock = new THREE.Clock;
-
 // declare render function
-render = () => {
+const render = () => {
 	// finally, render the scene from the camera's perspective.
 	// without the camera, we would be blind.
 	// without the scene, the camera has nothing to look at.
 	renderer.render(scene, camera)
 	// change the cube's rotation.
-	cube.rotation.y -= clock.getDelta();
+	cube.rotation.y -= clock.getDelta()
 	// now, we push the frame forward by one.
+	// we're covered even if there are frame lags and skips.
+	// this is because of our THREE clock.
 	requestAnimationFrame(render)
 }
-
 // call the render loop - it renders every frame once.
 render()
