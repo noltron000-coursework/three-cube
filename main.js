@@ -10,8 +10,9 @@ const scene = new THREE.Scene
 // CREATE CUBE
 // set up geometry and texture/color
 const cubeGeometry = new THREE.BoxGeometry(100, 100, 100)
-const cubeMaterial = new THREE.MeshBasicMaterial({
-	color: 0x1ec876
+// lambert geometry means 'please render using lights!'
+const cubeMaterial = new THREE.MeshLambertMaterial({
+	color: 0x1ec876,
 })
 // generate cube geometry
 const cube = new THREE.Mesh(cubeGeometry, cubeMaterial)
@@ -19,6 +20,30 @@ const cube = new THREE.Mesh(cubeGeometry, cubeMaterial)
 cube.rotation.y = Math.PI * 45 / 180
 // finally, add it to our scene
 scene.add(cube)
+
+
+// CREATE SKYBOX
+// set up geometry and texture/color
+const skyboxGeometry = new THREE.BoxGeometry(10000, 10000, 10000)
+const skyboxMaterial = new THREE.MeshBasicMaterial({
+	// we're inside the skybox.
+	// BackSide renders the insides of a box...
+	// ...usually it instead renders its outside surfaces.
+	side: THREE.BackSide,
+	color: 0x111111,
+})
+const skybox = new THREE.Mesh(skyboxGeometry, skyboxMaterial)
+// add the new skybox to the scene.
+scene.add(skybox)
+
+
+// CREATE LIGHTS
+// set up a point light with a color.
+const pointLight = new THREE.PointLight(0xffffff)
+// move the point light above and forward.
+pointLight.position.set(0, 300, 200)
+// add the new light to the scene.
+scene.add(pointLight)
 
 
 // CREATE CAMERA
