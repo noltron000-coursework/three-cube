@@ -10,12 +10,16 @@ const scene = new THREE.Scene
 // CREATE CUBE
 // set up geometry and texture/color
 const cubeGeometry = new THREE.BoxGeometry(100, 100, 100)
-// lambert geometry means 'please render using lights!'
-const cubeMaterial = new THREE.MeshLambertMaterial({
-	color: 0x1ec876,
-})
 // create a new texture
-const cubeTexture = THREE.ImageUtils.loadTexture('./assets/box.png')
+// WARNING: CORS must be enabled to do this with local hosting
+// In chrome, we must set the flag --allow-file-access-from-files
+const cubeTexture = new THREE.TextureLoader().load('./assets/box.png')
+// lambert geometry means 'please render using lights!'
+// here we also map cubetexture
+const cubeMaterial = new THREE.MeshLambertMaterial({
+	map: cubeTexture,
+	color: 0x28c0ec,
+})
 // generate cube geometry
 const cube = new THREE.Mesh(cubeGeometry, cubeMaterial)
 // rotate cube by 45 degrees, converted to radians
