@@ -14,6 +14,8 @@ const cubeGeometry = new THREE.BoxGeometry(100, 100, 100)
 const cubeMaterial = new THREE.MeshLambertMaterial({
 	color: 0x1ec876,
 })
+// create a new texture
+const cubeTexture = THREE.ImageUtils.loadTexture('./assets/box.png')
 // generate cube geometry
 const cube = new THREE.Mesh(cubeGeometry, cubeMaterial)
 // rotate cube by 45 degrees, converted to radians
