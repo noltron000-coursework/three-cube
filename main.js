@@ -35,10 +35,8 @@ materials.push(new THREE.MeshLambertMaterial({
 materials.push(new THREE.MeshLambertMaterial({ 
 	map: cubeTexture, color: 0xff00ff 
 })) // back face
-// great - now we can apply a texture to each of the six faces.
-const cubeMaterial = new THREE.MeshFaceMaterial(materials)
-// generate cube geometry
-const cube = new THREE.Mesh(cubeGeometry, cubeMaterial)
+
+const cube = new THREE.Mesh(cubeGeometry, materials)
 // rotate cube by 45 degrees, converted to radians
 cube.rotation.y = Math.PI * 45 / 180
 // finally, add it to our scene
@@ -58,6 +56,35 @@ const skyboxMaterial = new THREE.MeshBasicMaterial({
 const skybox = new THREE.Mesh(skyboxGeometry, skyboxMaterial)
 // add the new skybox to the scene.
 scene.add(skybox)
+
+
+// CREATE PARTICLES
+// add snowflakes
+const particleTexture = new THREE.TextureLoader().load('./snowflake.png');
+// make particle geometry
+const particles = new THREE.Geometry
+// generate 2000 random particles
+let count = 0
+while (count < 2000) {
+	const particle = new THREE.Vector3(
+		Math.random() * 500 - 250,
+		Math.random() * 500 - 250,
+		Math.random() * 500 - 250
+	)
+	particles.vertices.push(particle)
+	count += 1
+}
+// create a material
+const particleMaterial = new THREE.PointsMaterial({
+	map: particleTexture,
+	transparent: true,
+	size: 5,
+})
+// create particle system
+const particleSystem = new THREE.Points(
+	particles, particleMaterial)
+// add to the scene
+scene.add(particleSystem);
 
 
 // CREATE LIGHTS
@@ -113,8 +140,12 @@ const render = () => {
 	// without the camera, we would be blind.
 	// without the scene, the camera has nothing to look at.
 	renderer.render(scene, camera)
+	// get time deltas for animation rates
+	const delta = clock.getDelta()
 	// change the cube's rotation.
-	cube.rotation.y -= clock.getDelta()
+	cube.rotation.y -= delta
+	// change the particle's rotation.
+	particleSystem.rotation.y -= delta
 	// now, we push the frame forward by one.
 	// we're covered even if there are frame lags and skips.
 	// this is because of our THREE clock.
