@@ -16,10 +16,27 @@ const cubeGeometry = new THREE.BoxGeometry(100, 100, 100)
 const cubeTexture = new THREE.TextureLoader().load('./assets/box.png')
 // lambert geometry means 'please render using lights!'
 // here we also map cubetexture
-const cubeMaterial = new THREE.MeshLambertMaterial({
-	map: cubeTexture,
-	color: 0x28c0ec,
-})
+const materials = []
+materials.push(new THREE.MeshLambertMaterial({ 
+	map: cubeTexture, color: 0xff0000 
+})) // right face
+materials.push(new THREE.MeshLambertMaterial({ 
+	map: cubeTexture, color: 0xffff00 
+})) // left face
+materials.push(new THREE.MeshLambertMaterial({ 
+	map: cubeTexture, color: 0xffffff 
+})) // top face
+materials.push(new THREE.MeshLambertMaterial({ 
+	map: cubeTexture, color: 0x00ffff 
+})) // bottom face
+materials.push(new THREE.MeshLambertMaterial({ 
+	map: cubeTexture, color: 0x00ffff 
+})) // front face
+materials.push(new THREE.MeshLambertMaterial({ 
+	map: cubeTexture, color: 0xff00ff 
+})) // back face
+// great - now we can apply a texture to each of the six faces.
+const cubeMaterial = new THREE.MeshFaceMaterial(materials)
 // generate cube geometry
 const cube = new THREE.Mesh(cubeGeometry, cubeMaterial)
 // rotate cube by 45 degrees, converted to radians
